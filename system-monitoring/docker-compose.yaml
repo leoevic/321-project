@@ -1,0 +1,11 @@
+services:
+  node-exporter:
+    image: prom/node-exporter
+    volumes:
+      - /:/host:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.wifi'
+    network_mode: host
+    restart: always
