@@ -9,3 +9,20 @@ services:
       - '--collector.wifi'
     network_mode: host
     restart: always
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus # we need to add the volume
+    command: [
+      '--config.file=/etc/prometheus/prometheus.yaml',
+      '--storage.tsdb.path=/prometheus',
+      '--storage.tsdb.retention.time=1y',
+    ]
+    ports:
+      - '9090:9090'
+    restart: always
+
+volumes:
+  prometheus_data:
