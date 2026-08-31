@@ -1,0 +1,10 @@
+services:
+  airsensor:
+    build: .
+    privileged: true
+    command: ['python', '-u', 'main.py']
+    volumes:
+      - ./air_sensor.py:/usr/src/app/air_sensor.py
+      - ./main.py:/usr/src/app/main.py
+    ports:
+      - 8080:8080
