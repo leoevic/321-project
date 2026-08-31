@@ -1,9 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from time import sleep
 from air_sensor import AirSensor
+from distance_sensor import DistanceSensor
 import json
 
 air_sensor = AirSensor()
+distance_sensor = DistanceSensor()
 
 host = "0.0.0.0"
 port = 8080
@@ -23,9 +25,13 @@ class Server(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(object).encode())
 
     def do_GET(self):
-        if self.path == "/":
+        if self.path == "/air":
             air = air_sensor.readAir()
             self.sendJSON({"status": "ok", "air": air.__dict__})
+
+        elif self.path == "/distance":
+            distance = distance_sensor.readDistance()
+            self.sendJSON({"status": "ok", "distance": distance})
 
 
 def main():
