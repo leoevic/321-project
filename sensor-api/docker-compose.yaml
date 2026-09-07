@@ -6,6 +6,7 @@ services:
     volumes:
       - ./air_sensor.py:/usr/src/app/air_sensor.py
       - ./distance_sensor.py:/usr/src/app/distance_sensor.py
+      - ./vibration.py:/usr/src/app/vibration.py
       - ./main.py:/usr/src/app/main.py
       - ./index.html:/usr/src/app/index.html
     ports:

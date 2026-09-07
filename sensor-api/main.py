@@ -2,12 +2,14 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from time import sleep
 from air_sensor import AirSensor
 from distance_sensor import DistanceSensor
+from vibration import Vibration
 import json
 import os
 import mimetypes
 
 air_sensor = AirSensor()
 distance_sensor = DistanceSensor()
+vibration = Vibration()
 
 host = "0.0.0.0"
 port = 8080
@@ -70,6 +72,10 @@ class Server(BaseHTTPRequestHandler):
                     {"label": "Distance", "value": distance, "unit": "cm"},
                 ]
             })
+
+        elif self.path == "/api/vibration":
+            vibration.do()
+            self.sendJSON({ "status": "ok" })
 
 
 def main():
