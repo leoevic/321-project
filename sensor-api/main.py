@@ -25,13 +25,24 @@ class Server(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(object).encode())
 
     def do_GET(self):
-        if self.path == "/air":
+        if self.path == "/api/air":
             air = air_sensor.readAir()
-            self.sendJSON({"status": "ok", "air": air.__dict__})
+            self.sendJSON({
+                "status": "ok",
+                "data": [
+                    {"label": "Temperature", "value": air.temperature, "unit": "°C"},
+                    {"label": "Humidity", "value": air.humidity, "unit": "%"}
+                ]
+            })
 
-        elif self.path == "/distance":
+        elif self.path == "/api/distance":
             distance = distance_sensor.readDistance()
-            self.sendJSON({"status": "ok", "distance": distance})
+            self.sendJSON({
+                "status": "ok", "distance": distance,
+                "data": [
+                    {"label": "Distance", "value": distance, "unit": "cm"},
+                ]
+            })
 
 
 def main():

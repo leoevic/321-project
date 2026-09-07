@@ -1,5 +1,5 @@
 services:
-  airsensor:
+  webserver:
     build: .
     privileged: true
     command: ['python', '-u', 'main.py']
