@@ -6,6 +6,7 @@ from vibration import Vibration
 import json
 import os
 import mimetypes
+import textwrap
 
 air_sensor = AirSensor()
 distance_sensor = DistanceSensor()
@@ -53,6 +54,31 @@ class Server(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/":
             self.serveStatic()
+
+        if self.path == "/metrics":
+            air = air_sensor.readAir()
+            distance = distance_sensor.readDistance()
+            response = textwrap.dedent(f"""
+                # HELP sensor_distance measured distance from sensor in cm\n\
+                # TYPE sensor_distance gauge\n\
+                sensor_distance {distance}\n\
+                # HELP sensor_air_temperature measured temperature in celcius\n\
+                # TYPE sensor_air_temperature gauge\n\
+                sensor_air_temperature {air.temperature}\n\
+                # HELP sensor_air_humidity measured humidity in percent\n\
+                # TYPE sensor_air_humidity gauge\n\
+                sensor_air_humidity {air.humidity}
+            """)
+
+            self.send_response(200)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "*")
+            self.send_header("Access-Control-Allow-Headers", "*")
+            self.send_header("Vary", "Origin")           
+            self.send_header("Content-type", "text/plain")
+            self.end_headers()
+
+            self.wfile.write(response.encode())
 
         if self.path == "/api/air":
             air = air_sensor.readAir()
