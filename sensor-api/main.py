@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from time import sleep
 from air_sensor import AirSensor
 from distance_sensor import DistanceSensor
+# from light_sensor import LightSensor
 from vibration import Vibration
 import json
 import os
@@ -10,6 +11,7 @@ import textwrap
 
 air_sensor = AirSensor()
 distance_sensor = DistanceSensor()
+# light_sensor = LightSensor()
 vibration = Vibration()
 
 host = "0.0.0.0"
