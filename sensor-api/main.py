@@ -131,7 +131,9 @@ def read_distance_sensor(delay = 1):
 
 def handle_touch(is_touched):
     if is_touched:
-        print("touched")
+        mqtt_client.publish("leonardoevic/sensor/touch", "true", qos=2)
+    else:
+        mqtt_client.publish("leonardoevic/sensor/touch", "false", qos=2)
 
 def main():
     web_server = HTTPServer((host, port), Server)
