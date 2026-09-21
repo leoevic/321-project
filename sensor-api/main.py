@@ -22,13 +22,19 @@ touch_sensor = TouchSensor(11)
 host = "0.0.0.0"
 port = 8080
 
+touch_count = 0
+
 def on_connect(client, userdata, flags, reason_code, properites):
     print(f"Connected to MQTT Broker with result {reason_code}")
 
+def init_touch_counter():
+    mqtt_client.subscribe("leonardoevic/sensor/touch/count")
 
-def on_message(client, userdata, msg: object):
-    print(msg.topic + " " + str(msg.payload))
+def on_message(client, userdata, message):
+    global touch_count
 
+    if message.topic == "leonardoevic/sensor/touch/count":
+        touch_count = message.payload
 
 mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqtt_client.on_connect = on_connect
@@ -130,10 +136,14 @@ def read_distance_sensor(delay = 1):
         sleep(delay)
 
 def handle_touch(is_touched):
+    global touch_count
+
     if is_touched:
-        mqtt_client.publish("leonardoevic/sensor/touch", "true", qos=2)
+        touch_count = (touch_count + 1)
+        mqtt_client.publish("leonardoevic/sensor/touch/value", "true", qos=2)
+        mqtt_client.publish("leonardoevic/sensor/touch/count", touch_count, qos=2)
     else:
-        mqtt_client.publish("leonardoevic/sensor/touch", "false", qos=2)
+        mqtt_client.publish("leonardoevic/sensor/touch/value", "false", qos=2)
 
 def main():
     web_server = HTTPServer((host, port), Server)
