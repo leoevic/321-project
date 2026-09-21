@@ -3,6 +3,7 @@ from time import sleep
 from air_sensor import AirSensor
 from distance_sensor import DistanceSensor
 # from light_sensor import LightSensor
+from touch_sensor import TouchSensor
 from vibration import Vibration
 import threading
 import json
@@ -16,6 +17,7 @@ air_sensor = AirSensor()
 distance_sensor = DistanceSensor()
 # light_sensor = LightSensor()
 vibration = Vibration()
+touch_sensor = TouchSensor(11)
 
 host = "0.0.0.0"
 port = 8080
@@ -127,6 +129,10 @@ def read_distance_sensor(delay = 1):
         mqtt_client.publish("leonardoevic/sensor/distance", distance, qos=2)
         sleep(delay)
 
+def handle_touch(is_touched):
+    if is_touched:
+        print("touched")
+
 def main():
     web_server = HTTPServer((host, port), Server)
     print(f"Server started and listen to {host}:{port}")
@@ -136,6 +142,8 @@ def main():
     )
 
     distanceSensorThread.start()
+
+    touch_sensor.start(handle_touch)
 
     try:
         mqtt_client.loop_start()
