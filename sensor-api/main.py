@@ -12,6 +12,7 @@ import mimetypes
 import textwrap
 
 import paho.mqtt.client as mqtt
+import paho.mqtt.subscribe as subscribe
 
 air_sensor = AirSensor()
 distance_sensor = DistanceSensor()
@@ -26,8 +27,14 @@ touch_count = 0
 
 def on_connect(client, userdata, flags, reason_code, properites):
     print(f"Connected to MQTT Broker with result {reason_code}")
+    init_touch_counter()
 
 def init_touch_counter():
+    global touch_count
+    raw_payload = subscribe.simple("leonardoevic/sensor/touch/count", hostname="172.17.0.1").payload
+    touch_count = int(raw_payload.decode("utf-8"))
+
+    print(touch_count)
     mqtt_client.subscribe("leonardoevic/sensor/touch/count")
 
 def on_message(client, userdata, message):
@@ -139,11 +146,11 @@ def handle_touch(is_touched):
     global touch_count
 
     if is_touched:
-        touch_count = (touch_count + 1)
-        mqtt_client.publish("leonardoevic/sensor/touch/value", "true", qos=2)
-        mqtt_client.publish("leonardoevic/sensor/touch/count", touch_count, qos=2)
+        touch_count = (int(touch_count) + 1)
+        mqtt_client.publish("leonardoevic/sensor/touch/value", "true", qos=2, retain=True)
+        mqtt_client.publish("leonardoevic/sensor/touch/count", touch_count, qos=2, retain=True)
     else:
-        mqtt_client.publish("leonardoevic/sensor/touch/value", "false", qos=2)
+        mqtt_client.publish("leonardoevic/sensor/touch/value", "false", qos=2, retain=True)
 
 def main():
     web_server = HTTPServer((host, port), Server)

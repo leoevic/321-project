@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
     <h1>Dashboard</h1>
     <h2>MQTT Broker</h2>
     <p>Distance Sensor: <span id="distance-sensor-value">0</span> cm</p>
+
+
+    <img id="george_bush" src="george_bush.jpeg" height="320" class="hidden" />
+    <img id="barack_obama" src="barack_obama.jpeg" height="320" class="" />
+
     <script src="mqtt.min.js"></script>
     <script>
         console.log(mqtt);
@@ -30,6 +39,16 @@
             switch (topic) {
                 case 'leonardoevic/sensor/distance':
                     distanceSensorValue.textContent = parseFloat(message);
+                    break;
+                case 'leonardoevic/sensor/touch/value':
+                    if (message == "true") document.querySelector("#george_bush").classList.remove('hidden');
+                    if (message == "true") {
+                        document.querySelector("#george_bush").classList.remove('hidden');
+                        document.querySelector("#barack_obama").classList.add('hidden');
+                        break;
+                    }
+                    document.querySelector("#george_bush").classList.add('hidden');
+                    document.querySelector("#barack_obama").classList.remove('hidden');
                     break;
             }
         });
