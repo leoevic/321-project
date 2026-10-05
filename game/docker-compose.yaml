@@ -1,0 +1,10 @@
+services:
+  webserver:
+    build: .
+    privileged: true
+    command: ['python', '-u', 'main.py']
+    volumes:
+      - '.:/usr/src/app/'
+    ports:
+      - 8090:8090
+    restart: always
