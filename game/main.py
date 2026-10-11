@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 import threading
 from time import sleep
+import random
 
 from screen import Screen
 from controls import Controls
@@ -41,27 +42,26 @@ def do_tick():
     while True:
 
         new_zombies = []
-        for zombie in zombies:
+        zombie_index = random.randint(0, len(zombies) - 1)
+        zombie = zombies[zombie_index]
 
-            new_x = zombie[0]
-            new_y = zombie[1]
-            if (zombie[0] > player_position[0]):
-                new_x -= 1
+        new_x = zombie[0]
+        new_y = zombie[1]
+        if (zombie[0] > player_position[0]):
+            new_x -= 1
 
-            if (zombie[0] < player_position[0]):
-                new_x += 1
+        if (zombie[0] < player_position[0]):
+            new_x += 1
 
-            if (zombie[1] > player_position[1]):
-                new_y -= 1
+        if (zombie[1] > player_position[1]):
+            new_y -= 1
 
-            if (zombie[1] < player_position[1]):
-                new_y += 1
+        if (zombie[1] < player_position[1]):
+            new_y += 1
 
-            new_zombie = (new_x, new_y)
+        new_zombie = (new_x, new_y)
+        zombies[zombie_index] = new_zombie
 
-            new_zombies.append(new_zombie)
-
-        zombies = new_zombies
         screen.set_zombies(zombies)
         sleep(1)
 
