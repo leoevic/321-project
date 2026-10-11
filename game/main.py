@@ -1,5 +1,7 @@
 import paho.mqtt.client as mqtt
 import time
+import threading
+from time import sleep
 
 from screen import Screen
 from controls import Controls
@@ -11,6 +13,8 @@ screen = Screen()
 controls = Controls()
 
 player_position = (0, 0)
+
+zombies = [(5, 2), (3, 5), (2, 7)]
 
 def handle_up(is_pressed):
     global player_position
@@ -32,11 +36,49 @@ def handle_right(is_pressed):
     player_position = ((player_position[0] + 1) % 8, player_position[1])
     screen.set_player_position(player_position)
 
+def do_tick():
+    global zombies
+    while True:
+
+        new_zombies = []
+        for zombie in zombies:
+
+            new_x = zombie[0]
+            new_y = zombie[1]
+            if (zombie[0] > player_position[0]):
+                new_x -= 1
+
+            if (zombie[0] < player_position[0]):
+                new_x += 1
+
+            if (zombie[1] > player_position[1]):
+                new_y -= 1
+
+            if (zombie[1] < player_position[1]):
+                new_y += 1
+
+            new_zombie = (new_x, new_y)
+
+            new_zombies.append(new_zombie)
+
+        zombies = new_zombies
+        screen.set_zombies(zombies)
+        sleep(1)
+
 def main():
     print("Hello world")
 
     controls.start(handle_up, handle_down, handle_left, handle_right)
     screen.start()
+
+    # Put zombies
+    screen.set_zombies(zombies)
+
+    # Run tick
+    tickThread = threading.Thread(
+        target=do_tick, daemon=True
+    )
+    tickThread.start()
 
     try:
         while True:

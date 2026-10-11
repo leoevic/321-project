@@ -11,6 +11,7 @@ from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_
 class Screen:
     def __init__(self):
         self.player_position = (0, 0)
+        self.zombies = []
 
         self.serial = spi(port=0, device=1, gpio=noop())
         self.device = max7219(self.serial, cascaded=1, block_orientation=90, rotate=0)
@@ -34,6 +35,9 @@ class Screen:
     def set_player_position(self, pos: tuple):
         self.player_position = pos
 
+    def set_zombies(self, zombies: list):
+        self.zombies = zombies
+
     def draw(self):
         while True:
             with canvas(self.device) as draw:
@@ -43,5 +47,7 @@ class Screen:
                 # Draw player position
                 draw.point(self.player_position, fill="white")
 
-        sleep(500)
+                # Draw zombies
+                for zombie in self.zombies:
+                    draw.point(zombie, fill="white")
 
