@@ -1,35 +1,50 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# Copyright (c) 2017-18 Richard Hull and contributors
-# License: https://github.com/rm-hull/luma.led_matrix/blob/master/LICENSE.rst
-# Github link: https://github.com/rm-hull/luma.led_matrix/
-# Alle benötigten Module importieren
-import re
+import paho.mqtt.client as mqtt
 import time
-from luma.led_matrix.device import max7219
-from luma.core.interface.serial import spi, noop
-from luma.core.render import canvas
-from luma.core.virtual import viewport
-from luma.core.legacy import text, show_message
-from luma.core.legacy.font import proportional, CP437_FONT, TINY_FONT, SINCLAIR_FONT, LCD_FONT
 
-def main(cascaded, block_orientation, rotate):
-    # Matrix Gerät festlegen und erstellen.
-    serial = spi(port=0, device=1, gpio=noop())
-    device = max7219(serial, cascaded=cascaded or 1, block_orientation=block_orientation, rotate=rotate or 0)
-    device.clear()
-    # Matrix Initialisierung in der Konsole anzeigen
-    print("[-] Matrix initialized")
-    # Hallo Welt in der Matrix anzeigen
-    msg = "Hallo Welt"
-    # Ausgegebenen Text in der Konsole Anzeigen
-    print("[-] Printing: %s" % msg)
-    show_message(device, msg, fill="white", font=proportional(CP437_FONT), scroll_delay=0.51)
-if __name__ == "__main__":
-    # cascaded = Anzahl von MAX7219 LED Matrixen, standard=1
-    # block_orientation = choices 0, 90, -90, standard=0
-    # rotate = choices 0, 1, 2, 3, Rotate display 0=0°, 1=90°, 2=180°, 3=270°, standard=0
+from screen import Screen
+from controls import Controls
+
+mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+mqtt_client.connect("172.17.0.1", 1883, 60)
+
+screen = Screen()
+controls = Controls()
+
+player_position = (0, 0)
+
+def handle_up(is_pressed):
+    global player_position
+    player_position = (player_position[0], (player_position[1] - 1) % 8)
+    screen.set_player_position(player_position)
+
+def handle_down(is_pressed):
+    global player_position
+    player_position = (player_position[0], (player_position[1] + 1) % 8)
+    screen.set_player_position(player_position)
+
+def handle_left(is_pressed):
+    global player_position
+    player_position = ((player_position[0] - 1) % 8, player_position[1])
+    screen.set_player_position(player_position)
+
+def handle_right(is_pressed):
+    global player_position
+    player_position = ((player_position[0] + 1) % 8, player_position[1])
+    screen.set_player_position(player_position)
+
+def main():
+    print("Hello world")
+
+    controls.start(handle_up, handle_down, handle_left, handle_right)
+    screen.start()
+
     try:
-        main(cascaded=1, block_orientation=90, rotate=0)
+        while True:
+            time.sleep(1)  # Schläft ressourcenschonend für 1 Sekunde und wiederholt
     except KeyboardInterrupt:
-        pass
+        print("\nProgramm wird sauber beendet...")
+
+if __name__ == "__main__":
+    main()
+
+print("End")

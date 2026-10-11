@@ -2,7 +2,7 @@ FROM python:3.12
 
 RUN apt-get update
 
-RUN apt install -y swig python3-dev
+RUN apt-get install -y swig python3-dev
 
 RUN pip install setuptools
 
