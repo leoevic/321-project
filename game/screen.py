@@ -13,6 +13,8 @@ class Screen:
         self.player_position = (1, 1)
         self.zombies = []
 
+        self.fireballs = []
+
         self.world_x = world_x
         self.world_y = world_y
 
@@ -70,6 +72,9 @@ class Screen:
     def set_zombies(self, zombies: list):
         self.zombies = zombies
 
+    def set_fireballs(self, fireballs: list):
+        self.fireballs = fireballs
+
     def draw(self):
         while True:
             with canvas(self.device) as draw:
@@ -87,4 +92,8 @@ class Screen:
                 # Draw zombies
                 for zombie in self.zombies:
                     draw.point(self.determine_screen_position(zombie), fill="white")
+
+                # Draw fireballs
+                for fireball in self.fireballs:
+                    draw.point(self.determine_screen_position((fireball[0], fireball[1])), fill="white")
 

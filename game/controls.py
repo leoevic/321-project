@@ -10,11 +10,13 @@ class Controls:
         self.callback_down: Callable[[bool], None] | None = None
         self.callback_left: Callable[[bool], None] | None = None
         self.callback_right: Callable[[bool], None] | None = None
+        self.callback_shoot: Callable[[bool], None] | None = None
 
         self.button_up = 37
         self.button_down = 33
         self.button_left = 22
         self.button_right = 35
+        self.button_shoot = 11
 
         # GPIO setup
         GPIO.setmode(GPIO.BOARD)
@@ -24,6 +26,7 @@ class Controls:
         GPIO.setup(self.button_down, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.button_left, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.button_right, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(self.button_shoot, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     # Callbacks
     def _internal_callback_up(self, channel: int):
@@ -46,17 +49,24 @@ class Controls:
         if self.callback_right:
             self.callback_right(is_pressed)
 
+    def _internal_callback_shoot(self, channel: int):
+        is_pressed = GPIO.input(channel) == GPIO.LOW
+        if self.callback_shoot:
+            self.callback_shoot(is_pressed)
+
     def start(
         self,
         callback_up: Callable[[bool], None],
         callback_down: Callable[[bool], None],
         callback_left: Callable[[bool], None],
-        callback_right: Callable[[bool], None]
+        callback_right: Callable[[bool], None],
+        callback_shoot: Callable[[bool], None]
     ):
         self.callback_up = callback_up
         self.callback_down = callback_down
         self.callback_left = callback_left
         self.callback_right = callback_right
+        self.callback_shoot = callback_shoot
 
         print("testificate")
 
@@ -72,4 +82,7 @@ class Controls:
         )
         GPIO.add_event_detect(
             self.button_right, GPIO.RISING, callback=self._internal_callback_right, bouncetime=200
+        )
+        GPIO.add_event_detect(
+            self.button_shoot, GPIO.RISING, callback=self._internal_callback_shoot, bouncetime=200
         )

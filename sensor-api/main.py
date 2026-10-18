@@ -18,7 +18,7 @@ air_sensor = AirSensor()
 distance_sensor = DistanceSensor()
 # light_sensor = LightSensor()
 vibration = Vibration()
-touch_sensor = TouchSensor(11)
+# touch_sensor = TouchSensor(11)
 
 host = "0.0.0.0"
 port = 8080
@@ -162,7 +162,7 @@ def main():
 
     distanceSensorThread.start()
 
-    touch_sensor.start(handle_touch)
+    # touch_sensor.start(handle_touch)
 
     try:
         mqtt_client.loop_start()
