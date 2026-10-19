@@ -24,8 +24,8 @@ mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 mqtt_client.connect("172.17.0.1", 1883, 60)
 
 # Define how large the world should be
-WORLD_SIZE_X = 64
-WORLD_SIZE_Y = 64
+WORLD_SIZE_X = 12
+WORLD_SIZE_Y = 12
 
 def main():
     Game(WORLD_SIZE_X, WORLD_SIZE_Y)

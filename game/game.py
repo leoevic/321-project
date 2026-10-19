@@ -19,7 +19,7 @@ class Game:
         self.fireball_orientation = "right"
         self.score = 0
 
-        self.zombies = [(5, 2), (3, 5), (2, 7)]
+        self.zombies = [(7, 6), (8, 2), (3, 11)]
         self.fireballs = []
 
         self.world_x = world_x
@@ -160,6 +160,11 @@ class Game:
                     # Game over if a zombie has eaten the player
                     if new_zombie[0] == self.player_position[0] and new_zombie[1] == self.player_position[1]:
                         self.stop()
+
+                    # Sometimes, also make new zombies
+                    if random.randint(0, 3) == 3:
+                        additional_zombie = (random.randint(1, self.world_x), random.randint(1, self.world_y))
+                        self.zombies.append(additional_zombie)
 
                     self.screen.set_zombies(self.zombies)
 
