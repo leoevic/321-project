@@ -29,6 +29,8 @@ class Screen:
         self.device = max7219(self.serial, cascaded=1, block_orientation=90, rotate=0)
         self.device.clear()
 
+        self.even_frame = False
+
         # Draw one dot
         with canvas(self.device) as draw:
             draw.rectangle(self.device.bounding_box, fill="black")
@@ -43,6 +45,9 @@ class Screen:
             target=self.draw, daemon=True
         )
         drawThread.start()
+
+    def reset_camera(self):
+        self.camera_position = (0, 0)
 
     def set_player_position(self, pos: tuple):
         self.player_position = pos
@@ -81,6 +86,9 @@ class Screen:
                 # Clear screen
                 draw.rectangle(self.device.bounding_box, fill="black")
 
+                # We want an even frame because some things should not be shown in every frame
+                self.even_frame = not self.even_frame
+
                 # Draw world border
                 top_left = self.determine_screen_position(self.world_border_a)
                 bottom_right = self.determine_screen_position(self.world_border_d)
@@ -94,6 +102,9 @@ class Screen:
                     draw.point(self.determine_screen_position(zombie), fill="white")
 
                 # Draw fireballs
-                for fireball in self.fireballs:
-                    draw.point(self.determine_screen_position((fireball[0], fireball[1])), fill="white")
+                if self.even_frame:
+                    for fireball in self.fireballs:
+                        draw.point(self.determine_screen_position((fireball[0], fireball[1])), fill="white")
+
+            time.sleep(1 / 30)
 
