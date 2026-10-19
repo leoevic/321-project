@@ -24,6 +24,9 @@ zombies = [(5, 2), (3, 5), (2, 7)]
 
 fireballs = []
 
+# We need a lock to avoid race condition between fireballs and zombies
+data_lock = threading.Lock()
+
 def handle_up(is_pressed):
     global player_position
     global fireball_orientation
@@ -61,53 +64,70 @@ def do_zombie_tick():
     global zombies
     while True:
 
-        new_zombies = []
-        zombie_index = random.randint(0, len(zombies) - 1)
-        zombie = zombies[zombie_index]
+        if not zombies:
+            sleep(1)
+            pass
 
-        new_x = zombie[0]
-        new_y = zombie[1]
-        if (zombie[0] > player_position[0]):
-            new_x -= 1
+        with data_lock:
 
-        if (zombie[0] < player_position[0]):
-            new_x += 1
+            # Get random zombie
+            if zombies:
+                zombie_index = random.randint(0, len(zombies) - 1)
 
-        if (zombie[1] > player_position[1]):
-            new_y -= 1
+                zombie = zombies[zombie_index]
 
-        if (zombie[1] < player_position[1]):
-            new_y += 1
+                new_x = zombie[0]
+                new_y = zombie[1]
+                if (zombie[0] > player_position[0]):
+                    new_x -= 1
 
-        new_zombie = (new_x, new_y)
-        zombies[zombie_index] = new_zombie
+                if (zombie[0] < player_position[0]):
+                    new_x += 1
 
-        screen.set_zombies(zombies)
+                if (zombie[1] > player_position[1]):
+                    new_y -= 1
+
+                if (zombie[1] < player_position[1]):
+                    new_y += 1
+
+                new_zombie = (new_x, new_y)
+                zombies[zombie_index] = new_zombie
+
+                screen.set_zombies(zombies)
+
         sleep(1)
 
 def do_fireball_tick():
     global fireballs
+    global zombies
     while True:
-        new_fireballs = []
 
-        for fireball in fireballs:
-            new_x = fireball[0]
-            new_y = fireball[1]
-            direction = fireball[2]
+        with data_lock:
 
-            if direction == "up":
-                new_y -= 1
-            elif direction == "down":
-                new_y += 1
-            elif direction == "left":
-                new_x -= 1
-            elif direction == "right":
-                new_x += 1
+            new_fireballs = []
 
-            new_fireballs.append((new_x, new_y, direction))
+            for fireball in fireballs:
+                new_x = fireball[0]
+                new_y = fireball[1]
+                direction = fireball[2]
 
-        fireballs = new_fireballs
-        screen.set_fireballs(fireballs)
+                if direction == "up":
+                    new_y -= 1
+                elif direction == "down":
+                    new_y += 1
+                elif direction == "left":
+                    new_x -= 2
+                elif direction == "right":
+                    new_x += 1
+
+                # Destroy zombies
+                zombies = list(filter(lambda z: z[0] != new_x or z[1] != new_y, zombies))
+
+                if 0 <= new_x <= WORLD_SIZE_X and 0 <= new_y <= WORLD_SIZE_Y:
+                    new_fireballs.append((new_x, new_y, direction))
+
+            fireballs = new_fireballs
+            screen.set_fireballs(fireballs)
         sleep(1 / 2)
 
 def main():
