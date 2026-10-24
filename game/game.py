@@ -1,3 +1,4 @@
+import paho.mqtt.client as mqtt
 import threading
 import time
 import random
@@ -24,6 +25,11 @@ class Game:
 
         self.world_x = world_x
         self.world_y = world_y
+
+        # Prepare mqtt
+        self.mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+        self.mqtt_client.on_connect = self.mqtt_on_connect
+        self.mqtt_client.connect("172.17.0.1", 1883, 60)
 
         self.data_lock = threading.Lock()
 
@@ -70,11 +76,21 @@ class Game:
         self.zombieTickThread.start()
         self.fireballTickThread.start()
 
+    """
+    Stop game
+    """
     def stop(self):
         self.running = False
 
         self.zombieTickSignal.set()
         self.fireballTickSignal.set()
+
+    """
+    MQTT connect callback
+    """
+    def mqtt_on_connect(self, client, userdata, flags, reason_code, properties):
+        print(f"Connected to MQTT Broker with result {reason_code}")
+
 
     """
     Handle the up key
@@ -202,6 +218,7 @@ class Game:
 
                     if (old_length > new_length):
                         self.score += 1
+                        self.mqtt_client.publish("leonardoevic/game/score", self.score, qos=2)
 
                     if 0 <= new_x <= self.world_x and 0 <= new_y <= self.world_y:
                         new_fireballs.append((new_x, new_y, direction))

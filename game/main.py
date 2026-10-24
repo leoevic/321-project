@@ -1,8 +1,6 @@
 import paho.mqtt.client as mqtt
 import time
-import threading
-from time import sleep
-import random
+import RPi.GPIO as GPIO
 
 """
  _______________________________
@@ -16,12 +14,7 @@ import random
                 ||     ||
 """
 
-from screen import Screen
-from controls import Controls
 from game import Game
-
-mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-mqtt_client.connect("172.17.0.1", 1883, 60)
 
 # Define how large the world should be
 WORLD_SIZE_X = 12
@@ -35,6 +28,8 @@ def main():
             time.sleep(1)
     except KeyboardInterrupt:
         print("\nProgramm wird sauber beendet...")
+    finally:
+        GPIO.cleanup()
 
 if __name__ == "__main__":
     main()

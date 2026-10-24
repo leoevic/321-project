@@ -1,5 +1,5 @@
 services:
-  webserver:
+  game:
     build: .
     privileged: true
     command: ['python', '-u', 'main.py']
