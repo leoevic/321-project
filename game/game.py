@@ -29,7 +29,8 @@ class Game:
         # Prepare mqtt
         self.mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.mqtt_client.on_connect = self.mqtt_on_connect
-        self.mqtt_client.connect("172.17.0.1", 1883, 60)
+        self.mqtt_client.connect("mosquitto", 1883, 60)
+        self.mqtt_client.loop_start()
 
         self.data_lock = threading.Lock()
 
@@ -72,6 +73,7 @@ class Game:
     def start(self):
         self.reset_game_data()
         self.running = True
+        self.mqtt_client.publish("leonardoevic/game/running", 1, qos=2)
 
         self.zombieTickThread.start()
         self.fireballTickThread.start()
@@ -81,6 +83,7 @@ class Game:
     """
     def stop(self):
         self.running = False
+        self.mqtt_client.publish("leonardoevic/game/running", 0, qos=2)
 
         self.zombieTickSignal.set()
         self.fireballTickSignal.set()
