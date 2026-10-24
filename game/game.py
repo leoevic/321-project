@@ -49,6 +49,7 @@ class Game:
         self.player_position = (1, 1)
         self.fireball_orientation = "right"
         self.score = 0
+        self.mqtt_client.publish("leonardoevic/game/score", 0, qos=2, retain=True)
 
         self.screen.reset_camera()
         self.screen.set_player_position(self.player_position)
@@ -73,7 +74,7 @@ class Game:
     def start(self):
         self.reset_game_data()
         self.running = True
-        self.mqtt_client.publish("leonardoevic/game/running", 1, qos=2)
+        self.mqtt_client.publish("leonardoevic/game/running", 1, qos=2, retain=True)
 
         self.zombieTickThread.start()
         self.fireballTickThread.start()
@@ -83,7 +84,7 @@ class Game:
     """
     def stop(self):
         self.running = False
-        self.mqtt_client.publish("leonardoevic/game/running", 0, qos=2)
+        self.mqtt_client.publish("leonardoevic/game/running", 0, qos=2, retain=True)
 
         self.zombieTickSignal.set()
         self.fireballTickSignal.set()
@@ -221,7 +222,7 @@ class Game:
 
                     if (old_length > new_length):
                         self.score += 1
-                        self.mqtt_client.publish("leonardoevic/game/score", self.score, qos=2)
+                        self.mqtt_client.publish("leonardoevic/game/score", self.score, qos=2, retain=True)
 
                     if 0 <= new_x <= self.world_x and 0 <= new_y <= self.world_y:
                         new_fireballs.append((new_x, new_y, direction))

@@ -3,55 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
 
-    <style>
-        .hidden { display: none; }
-    </style>
+    <link href="style.css" rel="stylesheet">
+
+    <link href="favicon.ico" rel="icon" type="image/x-icon">
+
+    <title>Zombie Game Scoreboard</title>
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <h2>MQTT Broker</h2>
-    <p>Distance Sensor: <span id="distance-sensor-value">0</span> cm</p>
+    <h1>Zombie Game Scoreboard</h1>
 
+    <h2 id="game_not_running">Game is not running</h2>
+    <h2 id="game_running" class="hidden">Game is running</h2>
+    <h2 id="you_died" class="hidden">You died!</h2>
 
-    <img id="george_bush" src="george_bush.jpeg" height="320" class="hidden" />
-    <img id="barack_obama" src="barack_obama.jpeg" height="320" class="" />
+    <p id="score_information" class="hidden">Score: <span id="score_value">0</span></p>
 
     <script src="mqtt.min.js"></script>
-    <script>
-        console.log(mqtt);
-
-        const distanceSensorValue = document.querySelector('#distance-sensor-value');
-
-        const broker = `ws://${window.location.host}:9001`
-        const mqttClient = mqtt.connect(broker, {});
-
-        mqttClient.on('connect', () => {
-            console.log('connected');
-            mqttClient.subscribe('leonardoevic/#', err => {
-                if (err) console.error(err);
-            });
-        });
-
-        mqttClient.on('message', (topic, message) => {
-            console.log(`got message from topic ${topic}: ${message}`);
-            switch (topic) {
-                case 'leonardoevic/sensor/distance':
-                    distanceSensorValue.textContent = parseFloat(message);
-                    break;
-                case 'leonardoevic/sensor/touch/value':
-                    if (message == "true") document.querySelector("#george_bush").classList.remove('hidden');
-                    if (message == "true") {
-                        document.querySelector("#george_bush").classList.remove('hidden');
-                        document.querySelector("#barack_obama").classList.add('hidden');
-                        break;
-                    }
-                    document.querySelector("#george_bush").classList.add('hidden');
-                    document.querySelector("#barack_obama").classList.remove('hidden');
-                    break;
-            }
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

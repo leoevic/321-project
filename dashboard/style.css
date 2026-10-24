@@ -1,0 +1,19 @@
+* {
+    /**
+     * I love Verdana and Arial. You can scare designers with that.
+     */
+    font-family: Verdana, sans-serif;
+}
+
+#game_not_running,
+#you_died {
+    color: red;
+}
+
+#game_running {
+    color: green;
+}
+
+.hidden {
+    display: none;
+}
