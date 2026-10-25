@@ -27,7 +27,7 @@ def main():
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\nProgramm wird sauber beendet...")
+        print("\nExit")
     finally:
         GPIO.cleanup()
 

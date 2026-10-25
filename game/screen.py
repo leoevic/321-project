@@ -39,6 +39,9 @@ class Screen:
             draw.point((5, 3), fill="white")
             draw.point((6, 3), fill="white")
 
+    """
+    Start the self-refreshing screen
+    """
     def start(self):
         # Start thread
         drawThread = threading.Thread(
@@ -46,9 +49,17 @@ class Screen:
         )
         drawThread.start()
 
+    """
+    Reset the camera
+    The camera is the viewport which is visible on the display
+    """
     def reset_camera(self):
         self.camera_position = (0, 0)
 
+    """
+    Set the player position
+    This automatically sets the camera position
+    """
     def set_player_position(self, pos: tuple):
         self.player_position = pos
 
@@ -71,15 +82,28 @@ class Screen:
 
         self.camera_position = (new_camera_position_x, new_camera_position_y)
 
+    """
+    Determine the screen position by taking the camera position as an offset
+    """
     def determine_screen_position(self, pos: tuple):
         return (pos[0] - self.camera_position[0], pos[1] - self.camera_position[1])
 
+    """
+    Set all zombies
+    """
     def set_zombies(self, zombies: list):
         self.zombies = zombies
 
+    """
+    Set all fireballs
+    Fireballs are distinguished by flickering on the screen
+    """
     def set_fireballs(self, fireballs: list):
         self.fireballs = fireballs
 
+    """
+    Draw everything on the screen at a rate of 30 Hz (30 FPS)
+    """
     def draw(self):
         while True:
             with canvas(self.device) as draw:

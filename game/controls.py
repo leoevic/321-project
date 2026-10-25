@@ -28,32 +28,49 @@ class Controls:
         GPIO.setup(self.button_right, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.button_shoot, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-    # Callbacks
+    """
+    The callback for pressing the up button
+    """
     def _internal_callback_up(self, channel: int):
         is_pressed = GPIO.input(channel) == GPIO.LOW
         if self.callback_up:
             self.callback_up(is_pressed)
 
+    """
+    The callback for pressing the down button
+    """
     def _internal_callback_down(self, channel: int):
         is_pressed = GPIO.input(channel) == GPIO.LOW
         if self.callback_down:
             self.callback_down(is_pressed)
 
+    """
+    The callback for pressing the left button
+    """
     def _internal_callback_left(self, channel: int):
         is_pressed = GPIO.input(channel) == GPIO.LOW
         if self.callback_left:
             self.callback_left(is_pressed)
 
+    """
+    The callback for pressing the right button
+    """
     def _internal_callback_right(self, channel: int):
         is_pressed = GPIO.input(channel) == GPIO.LOW
         if self.callback_right:
             self.callback_right(is_pressed)
 
+    """
+    The callback for pressing the shoot button (i.e. the touch sensor)
+    """
     def _internal_callback_shoot(self, channel: int):
         is_pressed = GPIO.input(channel) == GPIO.LOW
         if self.callback_shoot:
             self.callback_shoot(is_pressed)
 
+    """
+    Method for setting and starting the callbacks
+    """
     def start(
         self,
         callback_up: Callable[[bool], None],
@@ -67,8 +84,6 @@ class Controls:
         self.callback_left = callback_left
         self.callback_right = callback_right
         self.callback_shoot = callback_shoot
-
-        print("testificate")
 
         # Add callbacks
         GPIO.add_event_detect(
