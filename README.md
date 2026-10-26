@@ -40,6 +40,8 @@ This will build all Docker images and run the project.
 
 **Note:** The application code itself isn't copied into the image itself when building the Docker image, but mounted when launching the service using the Docker Compose file.
 
+**Note:** Make sure that the switches 4-8 on the first switch block are set to ON.
+
 ## Usage
 
 See full documentation under `/docs`.

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="371" viewBox="0 0 768 371">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="40.0" y="34.0" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#1a1a1a" text-anchor="start" font-weight="bold">Python Class Map</text>
+<text x="40.0" y="50.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#6b6b6b" text-anchor="start">game - 2026-10-25 - showing: creates (member), creates, holds, calls</text>
+<rect x="40" y="62" width="520" height="123" rx="4" fill="#f7f7f7" stroke="#bfbfbf" stroke-width="0.8"/>
+<text x="52.0" y="78.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#1a1a1a" text-anchor="start" font-weight="bold">Legend - relationship kinds</text>
+<line x1="52" y1="89" x2="86" y2="89" stroke="rgb(214,69,64)" stroke-width="1.4"/>
+<polygon points="92.0,89.0 84.5,92.2 84.5,85.8" fill="rgb(214,69,64)" stroke="rgb(214,69,64)" stroke-width="1"/>
+<text x="102.0" y="92.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(214,69,64)" text-anchor="start" font-weight="bold">creates (member)</text>
+<text x="192.0" y="92.0" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#404040" text-anchor="start">self.attr = Foo() - the instance is stored on the object (owned for its lifetime)</text>
+<line x1="52" y1="104" x2="86" y2="104" stroke="rgb(184,135,20)" stroke-width="1.4"/>
+<polygon points="92.0,104.0 84.5,107.2 84.5,100.8" fill="rgb(184,135,20)" stroke="rgb(184,135,20)" stroke-width="1"/>
+<text x="102.0" y="107.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(184,135,20)" text-anchor="start" font-weight="bold">creates</text>
+<text x="192.0" y="107.0" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#404040" text-anchor="start">Foo() on the fly in a method or function body - not stored on self</text>
+<line x1="52" y1="119" x2="86" y2="119" stroke="rgb(46,163,79)" stroke-width="1.4" stroke-dasharray="5,3"/>
+<polygon points="92.0,119.0 84.5,122.2 84.5,115.8" fill="rgb(46,163,79)" stroke="rgb(46,163,79)" stroke-width="1"/>
+<text x="102.0" y="122.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(46,163,79)" text-anchor="start" font-weight="bold">holds</text>
+<text x="192.0" y="122.0" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#404040" text-anchor="start">typed __init__ param or class field - holds an instance it did not create</text>
+<line x1="52" y1="134" x2="86" y2="134" stroke="rgb(48,110,204)" stroke-width="1.4" stroke-dasharray="2,3"/>
+<polygon points="92.0,134.0 84.5,137.2 84.5,130.8" fill="rgb(48,110,204)" stroke="rgb(48,110,204)" stroke-width="1"/>
+<text x="102.0" y="137.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(48,110,204)" text-anchor="start" font-weight="bold">calls</text>
+<text x="192.0" y="137.0" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#404040" text-anchor="start">calls a project function that (transitively) creates instances</text>
+<line x1="52" y1="149" x2="86" y2="149" stroke="rgb(130,87,222)" stroke-width="1.4"/>
+<polygon points="92.0,149.0 83.0,153.5 83.0,144.5" fill="#ffffff" stroke="rgb(130,87,222)" stroke-width="1"/>
+<text x="102.0" y="152.0" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="rgb(130,87,222)" text-anchor="start" font-weight="bold">inherits</text>
+<text x="192.0" y="152.0" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#6b6b6b" text-anchor="start">subclassing (is-a) - drawn with a hollow triangle arrowhead  (hidden in this view)</text>
+<text x="52.0" y="169.0" font-family="Helvetica, Arial, sans-serif" font-size="8.5" fill="#6b6b6b" text-anchor="start">Nodes: square corners = class, pill = function, dashed border = module, dotted = external</text>
+<path d="M 525.3 288.0 C 575.3 288.0, 575.3 260.0, 619.3 260.0" fill="none" stroke="rgb(214,69,64)" stroke-width="1.1"/>
+<polygon points="624.3,260.0 616.8,263.2 616.8,256.8" fill="rgb(214,69,64)" stroke="rgb(214,69,64)" stroke-width="1"/>
+<path d="M 525.3 288.0 C 575.3 288.0, 575.3 316.0, 619.3 316.0" fill="none" stroke="rgb(214,69,64)" stroke-width="1.1"/>
+<polygon points="624.3,316.0 616.8,319.2 616.8,312.8" fill="rgb(214,69,64)" stroke="rgb(214,69,64)" stroke-width="1"/>
+<path d="M 178.9 288.0 C 228.9 288.0, 228.9 288.0, 272.9 288.0" fill="none" stroke="rgb(48,110,204)" stroke-width="1.1" stroke-dasharray="2,3"/>
+<polygon points="277.9,288.0 270.4,291.2 270.4,284.8" fill="rgb(48,110,204)" stroke="rgb(48,110,204)" stroke-width="1"/>
+<path d="M 352.1 288.0 C 402.1 288.0, 402.1 288.0, 446.1 288.0" fill="none" stroke="rgb(184,135,20)" stroke-width="1.1"/>
+<polygon points="451.1,288.0 443.6,291.2 443.6,284.8" fill="rgb(184,135,20)" stroke="rgb(184,135,20)" stroke-width="1"/>
+<rect x="452.1" y="273.0" width="73.2" height="30.0" rx="4" fill="#ffffff" stroke="#595959" stroke-width="1.1"/>
+<text x="488.7" y="292.0" font-family="'Courier New', Courier, monospace" font-size="12" fill="#1a1a1a" text-anchor="middle">Game</text>
+<rect x="625.3" y="245.0" width="102.4" height="30.0" rx="4" fill="#ffffff" stroke="#595959" stroke-width="1.1"/>
+<text x="676.5" y="264.0" font-family="'Courier New', Courier, monospace" font-size="12" fill="#1a1a1a" text-anchor="middle">Controls</text>
+<rect x="625.3" y="301.0" width="87.8" height="30.0" rx="4" fill="#ffffff" stroke="#595959" stroke-width="1.1"/>
+<text x="669.2" y="320.0" font-family="'Courier New', Courier, monospace" font-size="12" fill="#1a1a1a" text-anchor="middle">Screen</text>
+<rect x="40.0" y="273.0" width="138.9" height="30.0" rx="14" fill="#ffffff" stroke="#595959" stroke-width="1.1" stroke-dasharray="4,2"/>
+<text x="109.4" y="292.0" font-family="'Courier New', Courier, monospace" font-size="12" fill="#1a1a1a" text-anchor="middle">main (module)</text>
+<rect x="278.9" y="273.0" width="73.2" height="30.0" rx="14" fill="#ffffff" stroke="#595959" stroke-width="1.1"/>
+<text x="315.5" y="292.0" font-family="'Courier New', Courier, monospace" font-size="12" fill="#1a1a1a" text-anchor="middle">main</text>
+</svg>
